@@ -351,6 +351,10 @@ extension UIView {
             let subviewCenterX = self.center.x
             let subviewCenterY = self.center.y
             
+            // Area for Justin to put his code that draws the grid
+            
+            // End of area
+            
             if subviewCenterY <= parentViewHeightDividedByThree {
                 if subviewCenterX <= parentViewWidthDividedByThree {
                     positionInParent = "TopLeft"
