@@ -126,6 +126,7 @@ extension UIView {
         }
     }
     
+    // We actually could grab the type afterwards instead of doing it all in one function
     private func setID(vc: UIViewController) {
         let vcMirror = Mirror(reflecting: vc)
         var id: String = ""
