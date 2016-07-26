@@ -82,9 +82,12 @@ extension UIViewController {
             // Could just make it and return it here instead of setting it in setID
             element.setID(self)
             var idString = element.getID()
+            
+            // There could be a counter for each time it loops and that would be the number to append
             while AssociatedKeys.existingIDArray.contains(idString) {
                 idString = idString + "\(1)"
             }
+            
             element.setCustomID(idString)
             AssociatedKeys.existingIDArray.append(idString)
         }
