@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Unique_AccessID_iOS
+//  Unique AccessID iOS
 //
 //  Created by Nicholas Miller on 7/26/16.
 //  Copyright © 2016 nickbryanmiller. All rights reserved.

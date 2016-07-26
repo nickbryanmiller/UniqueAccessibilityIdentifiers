@@ -1,6 +1,6 @@
 //
 //  Unique_AccessID_iOSUITests.swift
-//  Unique_AccessID_iOSUITests
+//  Unique AccessID iOSUITests
 //
 //  Created by Nicholas Miller on 7/26/16.
 //  Copyright © 2016 nickbryanmiller. All rights reserved.
