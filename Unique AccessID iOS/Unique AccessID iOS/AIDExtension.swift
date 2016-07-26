@@ -350,7 +350,39 @@ extension UIView {
             let subviewCenterX = self.center.x
             let subviewCenterY = self.center.y
             
-            
+            if subviewCenterY <= parentViewHeightDividedByThree {
+                if subviewCenterX <= parentViewWidthDividedByThree {
+                    positionInParent = "TopLeft"
+                }
+                else if subviewCenterX > parentViewWidthDividedByThree && subviewCenterX < parentViewWidthDividedByThree * 2 {
+                    positionInParent = "TopMiddle"
+                }
+                else if subviewCenterX >= parentViewWidthDividedByThree * 2 {
+                    positionInParent = "TopRight"
+                }
+            }
+            else if subviewCenterY > parentViewHeightDividedByThree && subviewCenterY < parentViewHeightDividedByThree * 2 {
+                if subviewCenterX <= parentViewWidthDividedByThree {
+                    positionInParent = "MiddleLeft"
+                }
+                else if subviewCenterX > parentViewWidthDividedByThree && subviewCenterX < parentViewWidthDividedByThree * 2 {
+                    positionInParent = "MiddleMiddle"
+                }
+                else if subviewCenterX >= parentViewWidthDividedByThree * 2 {
+                    positionInParent = "MiddleRight"
+                }
+            }
+            else if subviewCenterY >= parentViewHeightDividedByThree * 2 {
+                if subviewCenterX <= parentViewWidthDividedByThree {
+                    positionInParent = "BottomLeft"
+                }
+                else if subviewCenterX > parentViewWidthDividedByThree && subviewCenterX < parentViewWidthDividedByThree * 2 {
+                    positionInParent = "BottomMiddle"
+                }
+                else if subviewCenterX >= parentViewWidthDividedByThree * 2 {
+                    positionInParent = "BottomRight"
+                }
+            }
         }
         
         return positionInParent
