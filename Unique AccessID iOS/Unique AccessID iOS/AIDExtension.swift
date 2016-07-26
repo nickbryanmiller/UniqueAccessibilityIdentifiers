@@ -114,40 +114,246 @@ extension UIViewController {
 extension UIView {
     
     func setCustomID(aID: String) {
-        
+        self.accessibilityIdentifier = aID
     }
     
     func getID() -> String {
-        
+        if let aID = self.accessibilityIdentifier {
+            return aID
+        }
+        else {
+            return ""
+        }
     }
     
     private func setID(vc: UIViewController) {
         let vcMirror = Mirror(reflecting: vc)
         var id: String = ""
+        
+        // let className = NSStringFromClass(vc.classForCoder).splitBy(".")[1]
+        let className = "\(vcMirror.subjectType)"
+        let grandParentOutletName = getGrandParentOutletName(vcMirror)
+        let parentOutletName = getParentOutletName(vcMirror)
+        let selfOutletName = getSelfOutletName(vcMirror)
+        let uniqueStringAndType = getUniqueStringAndType()
+        
+        if className != "" {
+            id = id + className
+        }
+        if grandParentOutletName != "" {
+            id = id + "_" + grandParentOutletName
+        }
+        if parentOutletName != "" {
+            id = id + "_" + parentOutletName
+        }
+        if selfOutletName != "" {
+            id = id + "_" + selfOutletName
+        }
+        if uniqueStringAndType != "" {
+            id = id + "_" + uniqueStringAndType
+        }
     }
     
     func getGrandParentOutletName(vcMirror: Mirror) -> String {
+        var memoryID = ""
+        let selfString = "\(self.superview?.superview)"
+        if let firstColon = selfString.characters.indexOf(":") {
+            let twoAfterFirstColon = firstColon.advancedBy(2)
+            let beyondType = selfString.substringFromIndex(twoAfterFirstColon)
+            if let firstSemicolon = beyondType.characters.indexOf(";") {
+                memoryID = beyondType.substringToIndex(firstSemicolon)
+            }
+        }
         
+        for child in vcMirror.children {
+            if memoryID != "" && "\(child.value)".containsString(memoryID) {
+                if let childLabel = child.label {
+                    return childLabel
+                }
+            }
+        }
+        
+        return ""
     }
     
     func getParentOutletName(vcMirror: Mirror) -> String {
+        var memoryID = ""
+        let selfString = "\(self.superview)"
+        if let firstColon = selfString.characters.indexOf(":") {
+            let twoAfterFirstColon = firstColon.advancedBy(2)
+            let beyondType = selfString.substringFromIndex(twoAfterFirstColon)
+            if let firstSemicolon = beyondType.characters.indexOf(";") {
+                memoryID = beyondType.substringToIndex(firstSemicolon)
+            }
+        }
         
+        for child in vcMirror.children {
+            if memoryID != "" && "\(child.value)".containsString(memoryID) {
+                if let childLabel = child.label {
+                    return childLabel
+                }
+            }
+        }
+        
+        return ""
     }
     
     func getSelfOutletName(vcMirror: Mirror) -> String {
+        var memoryID = ""
+        let selfString = "\(self)"
+        if let firstColon = selfString.characters.indexOf(":") {
+            let twoAfterFirstColon = firstColon.advancedBy(2)
+            let beyondType = selfString.substringFromIndex(twoAfterFirstColon)
+            if let firstSemicolon = beyondType.characters.indexOf(";") {
+                memoryID = beyondType.substringToIndex(firstSemicolon)
+            }
+        }
         
+        for child in vcMirror.children {
+            if memoryID != "" && "\(child.value)".containsString(memoryID) {
+                if let childLabel = child.label {
+                    return childLabel
+                }
+            }
+        }
+        
+        return ""
     }
     
     private func getUniqueStringAndType() -> String {
+        var positionInParentView: String = ""
+        var title: String = ""
+        var elementType: String = ""
+        var uniqueStringAndType: String = ""
         
+        if let myButton = self as? UIButton {
+            elementType = "UIButton"
+            if let buttonTitle = myButton.currentTitle {
+                title = buttonTitle.removeSpaces()
+            }
+        }
+        else if let myLabel = self as? UILabel {
+            elementType = "UILabel"
+            if let labelTitle = myLabel.text {
+                title = labelTitle.removeSpaces()
+            }
+        }
+        else if self is UIImageView {
+            elementType = "UIImageView"
+        }
+        else if self is UITextView {
+            elementType = "UITextView"
+        }
+        else if let myTextField = self as? UITextField {
+            elementType = "UITextField"
+            if let textFieldTitle = myTextField.placeholder {
+                title = textFieldTitle.removeSpaces()
+            }
+        }
+        else if self is UISegmentedControl {
+            elementType = "UISegmentedControl"
+        }
+        else if self is UISwitch {
+            elementType = "UISwitch"
+        }
+        else if let myNavigationBar = self as? UINavigationBar {
+            elementType = "UINavigationBar"
+            if let navigationBarTitle = myNavigationBar.topItem?.title {
+                title = navigationBarTitle.removeSpaces()
+            }
+        }
+        else if self is UITabBar {
+            elementType = "UITabBar"
+        }
+        else if self is UIWebView {
+            elementType = "UIWebView"
+        }
+        else if self is UITableViewCell {
+            elementType = "UITableViewCell"
+        }
+        else if self is UICollectionViewCell {
+            elementType = "UICollectionViewCell"
+        }
+        else {
+            elementType = "UIView"
+        }
+        
+        positionInParentView = getPositionInParentView()
+        if positionInParentView != "" {
+            uniqueStringAndType = uniqueStringAndType + positionInParentView
+        }
+        if title != "" {
+            uniqueStringAndType = uniqueStringAndType + "_" + title
+        }
+        if elementType != "" {
+            uniqueStringAndType = uniqueStringAndType + "_" + elementType
+        }
+        
+        return uniqueStringAndType
+
     }
     
     func getType() -> String {
+        var elementType: String = ""
         
+        if self is UIButton {
+            elementType = "UIButton"
+        }
+        else if self is UILabel {
+            elementType = "UILabel"
+        }
+        else if self is UIImageView {
+            elementType = "UIImageView"
+        }
+        else if self is UITextView {
+            elementType = "UITextView"
+        }
+        else if self is UITextField {
+            elementType = "UITextField"
+        }
+        else if self is UISegmentedControl {
+            elementType = "UISegmentedControl"
+        }
+        else if self is UISwitch {
+            elementType = "UISwitch"
+        }
+        else if self is UINavigationBar {
+            elementType = "UINavigationBar"
+        }
+        else if self is UITabBar {
+            elementType = "UITabBar"
+        }
+        else if self is UIWebView {
+            elementType = "UIWebView"
+        }
+        else if self is UITableViewCell {
+            elementType = "UITableViewCell"
+        }
+        else if self is UICollectionViewCell {
+            elementType = "UICollectionViewCell"
+        }
+        else {
+            elementType = "UIView"
+        }
+        
+        return elementType
     }
     
     private func getPositionInParentView() -> String {
         
+        var positionInParent: String = ""
+        
+        if let parentView = self.superview {
+            let parentViewHeightDividedByThree = parentView.bounds.height / 3
+            let parentViewWidthDividedByThree = parentView.bounds.width / 3
+            
+            let subviewCenterX = self.center.x
+            let subviewCenterY = self.center.y
+            
+            
+        }
+        
+        return positionInParent
     }
 }
 
