@@ -163,6 +163,7 @@ extension UIView {
         let selfOutletName = getSelfOutletName(vcMirror)
         let uniqueStringAndType = getUniqueStringAndType()
         
+        // We should check if it has an outlet first and if it does it would be unique without the parent
         if className != "" {
             id = id + className
         }
