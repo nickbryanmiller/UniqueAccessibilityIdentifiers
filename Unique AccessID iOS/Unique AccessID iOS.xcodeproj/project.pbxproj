@@ -15,6 +15,7 @@
 		276F38051D48112F004E1732 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 276F38031D48112F004E1732 /* LaunchScreen.storyboard */; };
 		276F38101D48112F004E1732 /* Unique_AccessID_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276F380F1D48112F004E1732 /* Unique_AccessID_iOSTests.swift */; };
 		276F381B1D48112F004E1732 /* Unique_AccessID_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276F381A1D48112F004E1732 /* Unique_AccessID_iOSUITests.swift */; };
+		276F38291D48115B004E1732 /* AIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276F38281D48115B004E1732 /* AIDExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		276F38161D48112F004E1732 /* Unique AccessID iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unique AccessID iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		276F381A1D48112F004E1732 /* Unique_AccessID_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unique_AccessID_iOSUITests.swift; sourceTree = "<group>"; };
 		276F381C1D48112F004E1732 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		276F38281D48115B004E1732 /* AIDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIDExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		276F37F61D48112F004E1732 /* Unique AccessID iOS */ = {
 			isa = PBXGroup;
 			children = (
+				276F38281D48115B004E1732 /* AIDExtension.swift */,
 				276F37F91D48112F004E1732 /* ViewController.swift */,
 				276F38011D48112F004E1732 /* Assets.xcassets */,
 				276F37F71D48112F004E1732 /* AppDelegate.swift */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				276F38291D48115B004E1732 /* AIDExtension.swift in Sources */,
 				276F37FA1D48112F004E1732 /* ViewController.swift in Sources */,
 				276F37F81D48112F004E1732 /* AppDelegate.swift in Sources */,
 				276F38001D48112F004E1732 /* Unique_AccessID_iOS.xcdatamodeld in Sources */,
@@ -486,6 +490,7 @@
 				276F38211D48112F004E1732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		276F38221D48112F004E1732 /* Build configuration list for PBXNativeTarget "Unique AccessID iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -494,6 +499,7 @@
 				276F38241D48112F004E1732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		276F38251D48112F004E1732 /* Build configuration list for PBXNativeTarget "Unique AccessID iOSUITests" */ = {
 			isa = XCConfigurationList;
@@ -502,6 +508,7 @@
 				276F38271D48112F004E1732 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
