@@ -1,6 +1,13 @@
+// Please Leave This Header In This File
 //
-// AIDExtension.swift
-// Description: Creating Unique Accessibility Identifiers of every object at Runtime
+// File Name: AIDExtension.swift
+//
+// Description:
+// Creating Unique Accessibility Identifiers of every object at Runtime
+//
+// This is big for Native Automated Testing in conjunction with the XCTest Framework
+// If you call this file the test recording software no longer has to grab the relative identifier because it
+// can grab the absolute identifier making the test cases less difficult to write
 //
 // Developers:
 // Nicholas Bryan Miller (GitHub: https://github.com/nickbryanmiller )
@@ -8,6 +15,21 @@
 // 
 // Created by Nicholas Miller on 7/21/16
 // Copyright © 2016 Nicholas Miller. All rights reserved.
+// This code is under the Apache 2.0 License.
+//
+// Use:
+// In the viewDidLayoutSubviews() method in each ViewController put "self.setEachIDInViewController()"
+// and this file will do the rest for you
+//
+// Tools:
+// We make use of class extensions, mirroring, and the built in view hierarchy
+//
+// Note:
+// If you see an issue anywhere please open a merge request and we will get to it as soon as possible.
+// If you would like to make an improvement anywhere open a merge request.
+// If you liked anything or are curious about anything reach out to one of us.
+// We like trying to improve the iOS Community :)
+// If you or your company decides to take it and implement it we would LOVE to know that please!!
 //
 
 import Foundation
