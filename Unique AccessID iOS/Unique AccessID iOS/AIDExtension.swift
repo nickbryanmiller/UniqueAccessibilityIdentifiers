@@ -180,6 +180,8 @@ extension UIView {
         if uniqueStringAndType != "" {
             id = id + "_" + uniqueStringAndType
         }
+        
+        self.accessibilityIdentifier = id
     }
     
     func getGrandParentOutletName(vcMirror: Mirror) -> String {
