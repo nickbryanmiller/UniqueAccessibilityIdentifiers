@@ -48,7 +48,7 @@ extension Array where Element: Equatable {
         }
     }
     
-    mutating func removeAllOfAnAbjectInArray(array: [Element], object: Element) {
+    mutating func removeAllOfAnObjectInArray(array: [Element], object: Element) {
         for element in array {
             if element == object {
                 self.removeObject(object)
@@ -71,6 +71,7 @@ extension String {
 
 extension UIViewController {
     
+    // This could be a dictionary where the key is the ViewControllerName
     private struct AssociatedKeys {
         static var existingIDArray: [String] = []
     }
