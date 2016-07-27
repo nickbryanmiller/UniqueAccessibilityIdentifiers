@@ -84,15 +84,15 @@ extension UIViewController {
         for element in view.subviews {
             
             if element is UITableViewCell || element is UICollectionViewCell {
-                setAndCheckID(view)
+                setAndCheckID(element)
             }
             
             // Do we really need imageview though?
             if element is UITextField || element is UITextView || element is UILabel || element is UIButton || element is UINavigationBar || element is UITabBar || element is UISwitch || element is UISegmentedControl || element is UIImageView || element is UIWebView {
-                setAndCheckID(view)
+                setAndCheckID(element)
             }
             else if element.subviews.count > 0 {
-                setEachIDForViewControllerAndView(view)
+                setEachIDForViewControllerAndView(element)
             }
         }
     }
