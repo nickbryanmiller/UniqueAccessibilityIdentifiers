@@ -123,6 +123,17 @@ extension UIViewController {
         }
     }
     
+    // This method is for developers to set a custom ID
+    // At the viewcontroller level is ideal because we can check for a duplicate
+    func setIDForElement(element: UIView, aID: String) {
+        if AssociatedKeys.existingIDArray.contains(aID) {
+            print("It already exists in the application")
+        }
+        else {
+            element.setCustomID(aID)
+        }
+    }
+    
     // Make sure to add ones that they set to this array also
     func getExisitingIDArray() -> [String] {
         return AssociatedKeys.existingIDArray
