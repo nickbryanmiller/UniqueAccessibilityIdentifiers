@@ -106,11 +106,17 @@ extension UIViewController {
             element.setID(self)
             var idString = element.getID()
             
+            var testIDString = idString
+            var duplicateCount = 1
+            
             // There could be a counter for each time it loops and that would be the number to append
             while AssociatedKeys.existingIDArray.contains(idString) {
-                idString = idString + "\(1)"
+                testIDString = idString
+                testIDString = testIDString + "\(duplicateCount)"
+                duplicateCount = duplicateCount + 1
             }
             
+            idString = testIDString
             element.setCustomID(idString)
             AssociatedKeys.existingIDArray.append(idString)
         }
