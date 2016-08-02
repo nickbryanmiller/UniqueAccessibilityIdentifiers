@@ -110,7 +110,7 @@ extension UIViewController {
             var duplicateCount = 1
             
             // There could be a counter for each time it loops and that would be the number to append
-            while AssociatedKeys.existingIDArray.contains(idString) {
+            while AssociatedKeys.existingIDArray.contains(testIDString) {
                 testIDString = idString
                 testIDString = testIDString + "\(duplicateCount)"
                 duplicateCount = duplicateCount + 1
