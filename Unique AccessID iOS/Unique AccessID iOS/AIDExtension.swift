@@ -109,7 +109,8 @@ extension UIViewController {
             var testIDString = idString
             var duplicateCount = 1
             
-            // There could be a counter for each time it loops and that would be the number to append
+            // This to make sure that we do not have a duplicate. If we do it appends a number to it
+            // This number is increasing based on the order it was added to the xml
             while AssociatedKeys.existingIDArray.contains(testIDString) {
                 testIDString = idString
                 testIDString = testIDString + "\(duplicateCount)"
