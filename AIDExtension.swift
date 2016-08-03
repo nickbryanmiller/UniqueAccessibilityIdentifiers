@@ -102,14 +102,13 @@ extension UIViewController {
             return
         }
         else {
-            // Could just make it and return it here instead of setting it in setID
             element.setID(self)
             var idString = element.getID()
             
             var testIDString = idString
             var duplicateCount = 1
             
-            // This to make sure that we do not have a duplicate. If we do it appends a number to it
+            // This is to make sure that we do not have a duplicate. If we do it appends a number to it
             // This number is increasing based on the order it was added to the xml
             while AssociatedKeys.existingIDArray.contains(testIDString) {
                 testIDString = idString
@@ -134,7 +133,6 @@ extension UIViewController {
         }
     }
     
-    // Make sure to add ones that they set to this array also
     func getExisitingIDArray() -> [String] {
         return AssociatedKeys.existingIDArray
     }
@@ -170,10 +168,9 @@ extension UIView {
         }
     }
     
-    // We actually could grab the type afterwards instead of doing it all in one function
     private func setID(vc: UIViewController) {
         let vcMirror = Mirror(reflecting: vc)
-        var id: String = "NJAid"
+        var id: String = "<NJAid"
         
         // let className = NSStringFromClass(vc.classForCoder).splitBy(".")[1]
         let className = "\(vcMirror.subjectType)"
@@ -184,7 +181,6 @@ extension UIView {
         let title = getTitle()
         let type = getType()
         
-        // We should check if it has an outlet first and if it does it would be unique without the parent
         if className != "" {
             id = id + ", ClassName: " + className
         }
