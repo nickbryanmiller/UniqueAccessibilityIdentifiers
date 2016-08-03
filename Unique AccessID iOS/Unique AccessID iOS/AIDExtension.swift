@@ -83,7 +83,7 @@ extension UIViewController {
     private func setEachIDForViewControllerAndView(view: UIView) {
         for element in view.subviews {
             
-            if element is UITableViewCell || element is UICollectionViewCell {
+            if element is UITableViewCell || element is UICollectionViewCell || element is UIScrollView {
                 setAndCheckID(element)
             }
             
@@ -102,7 +102,13 @@ extension UIViewController {
             return
         }
         else {
-            element.setID(self)
+            if element is UIScrollView {
+                element.setID(self, pageType: "Dynamic")
+            }
+            else {
+                element.setID(self, pageType: "Static")
+            }
+            
             var idString = element.getID()
             
             var testIDString = idString
@@ -168,7 +174,7 @@ extension UIView {
         }
     }
     
-    private func setID(vc: UIViewController) {
+    private func setID(vc: UIViewController, pageType: String) {
         let vcMirror = Mirror(reflecting: vc)
         var id: String = "<NJAid"
         
@@ -193,8 +199,10 @@ extension UIView {
         if selfOutletName != "" {
             id = id + ", SelfOutlet: " + selfOutletName
         }
-        if positionInParent != "" {
-            id = id + ", PositionInParent: " + positionInParent
+        if pageType == "Static" {
+            if positionInParent != "" {
+                id = id + ", PositionInParent: " + positionInParent
+            }
         }
         if title != "" {
             id = id + ", Title: " + title
