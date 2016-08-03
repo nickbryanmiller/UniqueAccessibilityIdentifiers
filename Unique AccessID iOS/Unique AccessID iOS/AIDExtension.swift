@@ -186,16 +186,16 @@ extension UIView {
         
         // We should check if it has an outlet first and if it does it would be unique without the parent
         if className != "" {
-            id = id + className
+            id = id + ", ClassName: " + className
         }
         if grandParentOutletName != "" {
-            id = id + "_" + grandParentOutletName
+            id = id + ", GPOutlet: " + grandParentOutletName
         }
         if parentOutletName != "" {
-            id = id + "_" + parentOutletName
+            id = id + ", POutlet: " + parentOutletName
         }
         if selfOutletName != "" {
-            id = id + "_" + selfOutletName
+            id = id + ", SelfOutlet: " + selfOutletName
         }
         if positionInParent != "" {
             id = id + ", PositionInParent: " + positionInParent
