@@ -11,7 +11,7 @@
 //
 // Developers:
 // Nicholas Bryan Miller (GitHub: https://github.com/nickbryanmiller )
-// Justin Rose (GitHub: https://github.com/justnjaster )
+// Justin Rose (GitHub: https://github.com/justinjaster )
 // 
 // Created by Nicholas Miller on 7/21/16
 // Copyright © 2016 Nicholas Miller. All rights reserved.
@@ -173,14 +173,16 @@ extension UIView {
     // We actually could grab the type afterwards instead of doing it all in one function
     private func setID(vc: UIViewController) {
         let vcMirror = Mirror(reflecting: vc)
-        var id: String = ""
+        var id: String = "NJAid"
         
         // let className = NSStringFromClass(vc.classForCoder).splitBy(".")[1]
         let className = "\(vcMirror.subjectType)"
         let grandParentOutletName = getGrandParentOutletName(vcMirror)
         let parentOutletName = getParentOutletName(vcMirror)
         let selfOutletName = getSelfOutletName(vcMirror)
-        let uniqueStringAndType = getUniqueStringAndType()
+        let positionInParent = getPositionInParentView()
+        let title = getTitle()
+        let type = getType()
         
         // We should check if it has an outlet first and if it does it would be unique without the parent
         if className != "" {
@@ -195,9 +197,17 @@ extension UIView {
         if selfOutletName != "" {
             id = id + "_" + selfOutletName
         }
-        if uniqueStringAndType != "" {
-            id = id + "_" + uniqueStringAndType
+        if positionInParent != "" {
+            id = id + ", PositionInParent: " + positionInParent
         }
+        if title != "" {
+            id = id + ", Title: " + title
+        }
+        if type != "" {
+            id = id + ", Type: " + type
+        }
+        
+        id = id + ">"
         
         self.accessibilityIdentifier = id
     }
@@ -268,77 +278,31 @@ extension UIView {
         return ""
     }
     
-    private func getUniqueStringAndType() -> String {
-        var positionInParentView: String = ""
+    private func getTitle() -> String {
         var title: String = ""
-        var elementType: String = ""
-        var uniqueStringAndType: String = ""
         
         if let myButton = self as? UIButton {
-            elementType = "UIButton"
             if let buttonTitle = myButton.currentTitle {
                 title = buttonTitle.removeSpaces()
             }
         }
         else if let myLabel = self as? UILabel {
-            elementType = "UILabel"
             if let labelTitle = myLabel.text {
                 title = labelTitle.removeSpaces()
             }
         }
-        else if self is UIImageView {
-            elementType = "UIImageView"
-        }
-        else if self is UITextView {
-            elementType = "UITextView"
-        }
         else if let myTextField = self as? UITextField {
-            elementType = "UITextField"
             if let textFieldTitle = myTextField.placeholder {
                 title = textFieldTitle.removeSpaces()
             }
         }
-        else if self is UISegmentedControl {
-            elementType = "UISegmentedControl"
-        }
-        else if self is UISwitch {
-            elementType = "UISwitch"
-        }
         else if let myNavigationBar = self as? UINavigationBar {
-            elementType = "UINavigationBar"
             if let navigationBarTitle = myNavigationBar.topItem?.title {
                 title = navigationBarTitle.removeSpaces()
             }
         }
-        else if self is UITabBar {
-            elementType = "UITabBar"
-        }
-        else if self is UIWebView {
-            elementType = "UIWebView"
-        }
-        else if self is UITableViewCell {
-            elementType = "UITableViewCell"
-        }
-        else if self is UICollectionViewCell {
-            elementType = "UICollectionViewCell"
-        }
-        else {
-            elementType = "UIView"
-        }
-        
-        positionInParentView = getPositionInParentView()
-        if positionInParentView != "" {
-            uniqueStringAndType = uniqueStringAndType + positionInParentView
-        }
-        if title != "" {
-            uniqueStringAndType = uniqueStringAndType + "_" + title
-        }
-        if elementType != "" {
-            uniqueStringAndType = uniqueStringAndType + "_" + elementType
-        }
-        
-        return uniqueStringAndType
 
+        return title
     }
     
     func getType() -> String {
