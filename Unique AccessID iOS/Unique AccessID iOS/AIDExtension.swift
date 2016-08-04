@@ -19,6 +19,7 @@
 //
 // Use:
 // In the viewDidLayoutSubviews() method in each ViewController put "self.setEachIDInViewController()"
+// In the viewWillDisappear() method in each ViewController put "self.removeEachIDInViewController()"
 // and this file will do the rest for you
 //
 // Tools:
