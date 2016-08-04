@@ -337,6 +337,10 @@ extension UIView {
             elementType = "UITableViewCell"
         case is UICollectionViewCell:
             elementType = "UICollectionViewCell"
+        case is UITableView:
+            elementType = "UITableView"
+        case is UICollectionView:
+            elementType = "UICollectionView"
         default:
             elementType = "UIView"
         }
