@@ -312,43 +312,32 @@ extension UIView {
     func getType() -> String {
         var elementType: String = ""
         
-        if self is UIButton {
+        switch self {
+        case is UIButton:
             elementType = "UIButton"
-        }
-        else if self is UILabel {
+        case is UILabel:
             elementType = "UILabel"
-        }
-        else if self is UIImageView {
+        case is UIImageView:
             elementType = "UIImageView"
-        }
-        else if self is UITextView {
+        case is UITextView:
             elementType = "UITextView"
-        }
-        else if self is UITextField {
+        case is UITextField:
             elementType = "UITextField"
-        }
-        else if self is UISegmentedControl {
+        case is UISegmentedControl:
             elementType = "UISegmentedControl"
-        }
-        else if self is UISwitch {
+        case is UISwitch:
             elementType = "UISwitch"
-        }
-        else if self is UINavigationBar {
+        case is UINavigationBar:
             elementType = "UINavigationBar"
-        }
-        else if self is UITabBar {
+        case is UITabBar:
             elementType = "UITabBar"
-        }
-        else if self is UIWebView {
+        case is UIWebView:
             elementType = "UIWebView"
-        }
-        else if self is UITableViewCell {
+        case is UITableViewCell:
             elementType = "UITableViewCell"
-        }
-        else if self is UICollectionViewCell {
+        case is UICollectionViewCell:
             elementType = "UICollectionViewCell"
-        }
-        else {
+        default:
             elementType = "UIView"
         }
         
