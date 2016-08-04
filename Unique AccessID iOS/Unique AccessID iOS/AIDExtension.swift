@@ -76,21 +76,46 @@ extension UIViewController {
         static var existingIDArray: [String] = []
     }
     
+    func removeEachIDInViewController() {
+        removeEachIDForViewControllerAndView(self.view)
+    }
+    
     func setEachIDInViewController() {
         setEachIDForViewControllerAndView(self.view)
+    }
+    
+    private func removeEachIDForViewControllerAndView(view: UIView) {
+        for element in view.subviews {
+            
+            if let aID = element.accessibilityIdentifier {
+                if aID.containsString("NJAid") {
+                    AssociatedKeys.existingIDArray.removeObject(aID)
+                    element.accessibilityIdentifier = nil
+                }
+            }
+                
+            if element.subviews.count > 0 {
+                removeEachIDForViewControllerAndView(element)
+            }
+        }
     }
     
     private func setEachIDForViewControllerAndView(view: UIView) {
         for element in view.subviews {
             
-            if element is UITableViewCell || element is UICollectionViewCell || element is UIScrollView {
+            // We want to mark these with identifiers and go down their view hierarchy
+            if element is UITableViewCell || element is UICollectionViewCell || element is UIScrollView || element is UITableView || element is UICollectionView {
                 setAndCheckID(element)
             }
             
-            // Do we really need imageview though?
-            if element is UITextField || element is UITextView || element is UILabel || element is UIButton || element is UINavigationBar || element is UITabBar || element is UISwitch || element is UISegmentedControl || element is UIImageView || element is UIWebView {
+            // essentials
+            if element is UITextField || element is UITextView || element is UIButton || element is UISwitch || element is UISegmentedControl || element is UIWebView {
                 setAndCheckID(element)
             }
+            // throw aways
+            else if element is UILabel || element is UIImageView || element is UINavigationBar || element is UITabBar {
+            }
+            // recursive down the view hierarchy
             else if element.subviews.count > 0 {
                 setEachIDForViewControllerAndView(element)
             }
@@ -110,21 +135,35 @@ extension UIViewController {
             }
             
             var idString = element.getID()
+            let count = getDuplicateCount(idString)
             
-            var testIDString = idString
-            var duplicateCount = 1
-            
+            if count > 0 {
+                idString = idString + ", Count: \(count)"
+            }
+
+            let finalID = "<" + idString + ">"
+            element.setCustomID(finalID)
+            AssociatedKeys.existingIDArray.append(finalID)
+        }
+    }
+    
+    func getDuplicateCount(idString: String) -> Int {
+        var testIDString = idString
+        var duplicateCount = 0
+        
+        if !AssociatedKeys.existingIDArray.contains("<" + testIDString + ">") {
+            return 0
+        }
+        else {
             // This is to make sure that we do not have a duplicate. If we do it appends a number to it
             // This number is increasing based on the order it was added to the xml
-            while AssociatedKeys.existingIDArray.contains(testIDString) {
+            while AssociatedKeys.existingIDArray.contains("<" + testIDString + ">") {
                 testIDString = idString
-                testIDString = testIDString + "\(duplicateCount)"
                 duplicateCount = duplicateCount + 1
+                testIDString = testIDString + ", Count: \(duplicateCount)"
             }
             
-            idString = testIDString
-            element.setCustomID(idString)
-            AssociatedKeys.existingIDArray.append(idString)
+            return duplicateCount
         }
     }
     
