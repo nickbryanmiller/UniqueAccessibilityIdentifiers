@@ -215,7 +215,7 @@ extension UIView {
     
     private func setID(vc: UIViewController, pageType: String) {
         let vcMirror = Mirror(reflecting: vc)
-        var id: String = "<NJAid"
+        var id: String = "NJAid"
         
         // let className = NSStringFromClass(vc.classForCoder).splitBy(".")[1]
         let className = "\(vcMirror.subjectType)"
@@ -249,8 +249,6 @@ extension UIView {
         if type != "" {
             id = id + ", Type: " + type
         }
-        
-        id = id + ">"
         
         self.accessibilityIdentifier = id
     }
