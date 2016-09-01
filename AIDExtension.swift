@@ -19,6 +19,7 @@
 //
 // Use:
 // In the viewDidLayoutSubviews() method in each ViewController put "self.setEachIDInViewController()"
+// In the viewWillDisappear() method in each ViewController put "self.removeEachIDInViewController()"
 // and this file will do the rest for you
 //
 // Tools:
@@ -76,21 +77,46 @@ extension UIViewController {
         static var existingIDArray: [String] = []
     }
     
+    func removeEachIDInViewController() {
+        removeEachIDForViewControllerAndView(self.view)
+    }
+    
     func setEachIDInViewController() {
         setEachIDForViewControllerAndView(self.view)
+    }
+    
+    private func removeEachIDForViewControllerAndView(view: UIView) {
+        for element in view.subviews {
+            
+            if let aID = element.accessibilityIdentifier {
+                if aID.containsString("NJAid") {
+                    AssociatedKeys.existingIDArray.removeObject(aID)
+                    element.accessibilityIdentifier = nil
+                }
+            }
+                
+            if element.subviews.count > 0 {
+                removeEachIDForViewControllerAndView(element)
+            }
+        }
     }
     
     private func setEachIDForViewControllerAndView(view: UIView) {
         for element in view.subviews {
             
-            if element is UITableViewCell || element is UICollectionViewCell {
+            // We want to mark these with identifiers and go down their view hierarchy
+            if element is UITableViewCell || element is UICollectionViewCell || element is UIScrollView || element is UITableView || element is UICollectionView {
                 setAndCheckID(element)
             }
             
-            // Do we really need imageview though?
-            if element is UITextField || element is UITextView || element is UILabel || element is UIButton || element is UINavigationBar || element is UITabBar || element is UISwitch || element is UISegmentedControl || element is UIImageView || element is UIWebView {
+            // essentials
+            if element is UITextField || element is UITextView || element is UIButton || element is UISwitch || element is UISegmentedControl || element is UIWebView {
                 setAndCheckID(element)
             }
+            // throw aways
+            else if element is UILabel || element is UIImageView || element is UINavigationBar || element is UITabBar {
+            }
+            // recursive down the view hierarchy
             else if element.subviews.count > 0 {
                 setEachIDForViewControllerAndView(element)
             }
@@ -102,23 +128,43 @@ extension UIViewController {
             return
         }
         else {
-            element.setID(self)
-            var idString = element.getID()
-            
-            var testIDString = idString
-            var duplicateCount = 1
-            
-            // This is to make sure that we do not have a duplicate. If we do it appends a number to it
-            // This number is increasing based on the order it was added to the xml
-            while AssociatedKeys.existingIDArray.contains(testIDString) {
-                testIDString = idString
-                testIDString = testIDString + "\(duplicateCount)"
-                duplicateCount = duplicateCount + 1
+            if element is UIScrollView {
+                element.setID(self, pageType: "Dynamic")
+            }
+            else {
+                element.setID(self, pageType: "Static")
             }
             
-            idString = testIDString
-            element.setCustomID(idString)
-            AssociatedKeys.existingIDArray.append(idString)
+            var idString = element.getID()
+            let count = getDuplicateCount(idString)
+            
+            if count > 0 {
+                idString = idString + ", Count: \(count)"
+            }
+
+            let finalID = "<" + idString + ">"
+            element.setCustomID(finalID)
+            AssociatedKeys.existingIDArray.append(finalID)
+        }
+    }
+    
+    func getDuplicateCount(idString: String) -> Int {
+        var testIDString = idString
+        var duplicateCount = 0
+        
+        if !AssociatedKeys.existingIDArray.contains("<" + testIDString + ">") {
+            return 0
+        }
+        else {
+            // This is to make sure that we do not have a duplicate. If we do it appends a number to it
+            // This number is increasing based on the order it was added to the xml
+            while AssociatedKeys.existingIDArray.contains("<" + testIDString + ">") {
+                testIDString = idString
+                duplicateCount = duplicateCount + 1
+                testIDString = testIDString + ", Count: \(duplicateCount)"
+            }
+            
+            return duplicateCount
         }
     }
     
@@ -168,9 +214,9 @@ extension UIView {
         }
     }
     
-    private func setID(vc: UIViewController) {
+    private func setID(vc: UIViewController, pageType: String) {
         let vcMirror = Mirror(reflecting: vc)
-        var id: String = "<NJAid"
+        var id: String = "NJAid"
         
         // let className = NSStringFromClass(vc.classForCoder).splitBy(".")[1]
         let className = "\(vcMirror.subjectType)"
@@ -193,8 +239,10 @@ extension UIView {
         if selfOutletName != "" {
             id = id + ", SelfOutlet: " + selfOutletName
         }
-        if positionInParent != "" {
-            id = id + ", PositionInParent: " + positionInParent
+        if pageType == "Static" {
+            if positionInParent != "" {
+                id = id + ", PositionInParent: " + positionInParent
+            }
         }
         if title != "" {
             id = id + ", Title: " + title
@@ -202,8 +250,6 @@ extension UIView {
         if type != "" {
             id = id + ", Type: " + type
         }
-        
-        id = id + ">"
         
         self.accessibilityIdentifier = id
     }
@@ -304,43 +350,36 @@ extension UIView {
     func getType() -> String {
         var elementType: String = ""
         
-        if self is UIButton {
+        switch self {
+        case is UIButton:
             elementType = "UIButton"
-        }
-        else if self is UILabel {
+        case is UILabel:
             elementType = "UILabel"
-        }
-        else if self is UIImageView {
+        case is UIImageView:
             elementType = "UIImageView"
-        }
-        else if self is UITextView {
+        case is UITextView:
             elementType = "UITextView"
-        }
-        else if self is UITextField {
+        case is UITextField:
             elementType = "UITextField"
-        }
-        else if self is UISegmentedControl {
+        case is UISegmentedControl:
             elementType = "UISegmentedControl"
-        }
-        else if self is UISwitch {
+        case is UISwitch:
             elementType = "UISwitch"
-        }
-        else if self is UINavigationBar {
+        case is UINavigationBar:
             elementType = "UINavigationBar"
-        }
-        else if self is UITabBar {
+        case is UITabBar:
             elementType = "UITabBar"
-        }
-        else if self is UIWebView {
+        case is UIWebView:
             elementType = "UIWebView"
-        }
-        else if self is UITableViewCell {
+        case is UITableViewCell:
             elementType = "UITableViewCell"
-        }
-        else if self is UICollectionViewCell {
+        case is UICollectionViewCell:
             elementType = "UICollectionViewCell"
-        }
-        else {
+        case is UITableView:
+            elementType = "UITableView"
+        case is UICollectionView:
+            elementType = "UICollectionView"
+        default:
             elementType = "UIView"
         }
         
@@ -357,10 +396,6 @@ extension UIView {
             
             let subviewCenterX = self.center.x
             let subviewCenterY = self.center.y
-            
-            // Area for Justin to put his code that draws the grid
-            
-            // End of area
             
             if subviewCenterY <= parentViewHeightDividedByThree {
                 if subviewCenterX <= parentViewWidthDividedByThree {
